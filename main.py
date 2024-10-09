@@ -1,99 +1,96 @@
 import pygame
-import random
+import sys
 
 # Инициализация Pygame
 pygame.init()
 
-# Параметры окна
-WIDTH, HEIGHT = 400, 600
+# Константы
+WIDTH, HEIGHT = 300, 300
+LINE_WIDTH = 15
+BOARD_SIZE = 3
+SPACE = WIDTH // BOARD_SIZE
+BACKGROUND_COLOR = (28, 170, 156)
+LINE_COLOR = (23, 145, 135)
+CIRCLE_COLOR = (239, 231, 200)
+CROSS_COLOR = (66, 66, 66)
+
+# Создание окна
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Flappy Bird")
+pygame.display.set_caption('Крестики-Нолики')
 
-# Цвета
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+# Инициализация игрового поля
+board = [[None] * BOARD_SIZE for _ in range(BOARD_SIZE)]
+player = 'X'  # Начальный игрок
 
-# Параметры птицы
-bird_x = 50
-bird_y = HEIGHT // 2
-bird_size = 30
-bird_speed_y = 0
-gravity = 0.5
-jump_height = -10
+def draw_lines():
+    # Рисуем линии для игрового поля
+    pygame.draw.line(screen, LINE_COLOR, (0, SPACE), (WIDTH, SPACE), LINE_WIDTH)
+    pygame.draw.line(screen, LINE_COLOR, (0, SPACE * 2), (WIDTH, SPACE * 2), LINE_WIDTH)
+    pygame.draw.line(screen, LINE_COLOR, (SPACE, 0), (SPACE, HEIGHT), LINE_WIDTH)
+    pygame.draw.line(screen, LINE_COLOR, (SPACE * 2, 0), (SPACE * 2, HEIGHT), LINE_WIDTH)
 
-# Параметры препятствий
-pipe_width = 70
-pipe_gap = 150
-pipe_speed = 5
-pipe_x = WIDTH
-pipe_height_top = random.randint(100, HEIGHT - pipe_gap - 100)
-pipe_height_bottom = HEIGHT - pipe_gap - pipe_height_top
+def draw_figures():
+    for row in range(BOARD_SIZE):
+        for col in range(BOARD_SIZE):
+            if board[row][col] == 'X':
+                pygame.draw.line(screen, CROSS_COLOR, (col * SPACE + 30, row * SPACE + 30),
+                                 (col * SPACE + SPACE - 30, row * SPACE + SPACE - 30), LINE_WIDTH)
+                pygame.draw.line(screen, CROSS_COLOR, (col * SPACE + SPACE - 30, row * SPACE + 30),
+                                 (col * SPACE + 30, row * SPACE + SPACE - 30), LINE_WIDTH)
+            elif board[row][col] == 'O':
+                pygame.draw.circle(screen, CIRCLE_COLOR, (col * SPACE + SPACE // 2, row * SPACE + SPACE // 2),
+                                   SPACE // 2 - 30, LINE_WIDTH)
 
-# Игровой цикл
-running = True
-clock = pygame.time.Clock()
+def mark_square(row, col):
+    global player
+    if board[row][col] is None:
+        board[row][col] = player
+        player = 'O' if player == 'X' else 'X'
 
-# Счет
-score = 0
-font = pygame.font.SysFont("comicsansms", 30)
+def reset_game():
+    global board, player
+    board = [[None] * BOARD_SIZE for _ in range(BOARD_SIZE)]
+    player = 'X'
 
-def draw_objects():
-    screen.fill(WHITE)  # Заливка фона
-    pygame.draw.rect(screen, BLUE, (bird_x, bird_y, bird_size, bird_size))  # Птица
-    pygame.draw.rect(screen, GREEN, (pipe_x, 0, pipe_width, pipe_height_top))  # Верхняя труба
-    pygame.draw.rect(screen, GREEN, (pipe_x, HEIGHT - pipe_height_bottom, pipe_width, pipe_height_bottom))  # Нижняя труба
-    score_text = font.render(f"Score: {score}", True, BLACK)
-    screen.blit(score_text, (10, 10))
-
-def detect_collision():
-    # Проверка столкновения с верхней и нижней границами экрана
-    if bird_y < 0 or bird_y + bird_size > HEIGHT:
-        return True
-    # Проверка столкновения с трубами
-    if pipe_x < bird_x + bird_size < pipe_x + pipe_width:
-        if bird_y < pipe_height_top or bird_y + bird_size > HEIGHT - pipe_height_bottom:
+def check_win():
+    # Проверка выигрыша
+    for row in range(BOARD_SIZE):
+        if board[row][0] == board[row][1] == board[row][2] != None:
+            print(f"Выйграл {board[row][0]}!")
             return True
+    for col in range(BOARD_SIZE):
+        if board[0][col] == board[1][col] == board[2][col] != None:
+            print(f"Выйграл {board[0][col]}!")
+            return True
+    if board[0][0] == board[1][1] == board[2][2] != None:
+        print(f"Выйграл {board[0][0]}!")
+        return True
+    if board[0][2] == board[1][1] == board[2][0] != None:
+        print(f"Выйграл {board[0][2]}!")
+        return True
     return False
 
-while running:
-    # Проверка событий
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                bird_speed_y = jump_height  # Птица подпрыгивает при нажатии пробела
+def main():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouseX = event.pos[0]
+                mouseY = event.pos[1]
+                clicked_row = mouseY // SPACE
+                clicked_col = mouseX // SPACE
+                mark_square(clicked_row, clicked_col)
 
-    # Применение гравитации и изменение положения птицы
-    bird_speed_y += gravity
-    bird_y += bird_speed_y
+                if check_win():
+                    reset_game()
 
-    # Движение труб
-    pipe_x -= pipe_speed
-    if pipe_x + pipe_width < 0:
-        pipe_x = WIDTH
-        pipe_height_top = random.randint(100, HEIGHT - pipe_gap - 100)
-        pipe_height_bottom = HEIGHT - pipe_gap - pipe_height_top
-        score += 1  # Увеличение счета при прохождении трубы
+        screen.fill(BACKGROUND_COLOR)
+        draw_lines()
+        draw_figures()
+        pygame.display.update()
 
-    # Отрисовка объектов
-    draw_objects()
-    print(pipe_x)
+if __name__ == "__main__":
+    main()
 
-    # Проверка на столкновения
-    if detect_collision():
-        running = False
-
-    # Обновление экрана
-    pygame.display.flip()
-
-    # Ограничение FPS
-    clock.tick(60)
-
-# Завершение Pygame
-pygame.quit()
-
-# Вывод финального счета
-print(f"Игра окончена. Ваш счет: {score}")
