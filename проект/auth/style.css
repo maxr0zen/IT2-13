@@ -1,0 +1,165 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    position: relative;
+}
+
+.background-feed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(240, 240, 240, 0.7);
+    overflow-y: auto;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем новости */
+}
+
+.background-feed.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.news-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    width: 80%; /* Задаем ширину*/
+    max-width: 600px; /* Задаем максимальную ширину */
+    box-sizing: border-box; /* Чтобы padding и border не увеличивали размер*/
+}
+
+.news-header{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.news-author {
+  font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.news-content {
+    display: flex;
+    flex-direction: column; /* Располагаем картинку и описание вертикально */
+    align-items: center;
+}
+
+.news-image {
+    width: 100%; /* Занимает всю ширину контейнера */
+    max-height: 300px; /* Максимальная высота */
+    object-fit: cover; /* Обрезаем изображение, сохраняя пропорции */
+    border-radius: 5px;
+    display: block;
+}
+
+.news-caption {
+  margin: 10px 0;
+    text-align: center;
+}
+
+.news-footer{
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+  text-align: right;
+}
+
+.likes {
+  font-size: 1.2em;
+    cursor: pointer;
+}
+
+.auth-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+    z-index: 10;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.auth-container h2 {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.message {
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.message.success {
+    color: green;
+}
+
+.message.error {
+    color: red;
+}
+
+.auth-container.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}

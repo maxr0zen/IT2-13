@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация с лентой новостей</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="background-feed" id="backgroundFeed">
+    <div class="news-item">
+         <div class="news-header">
+            <span class="news-author">Автор</span>
+        </div>
+        <div class="news-content">
+            <img src="src/5b00129dd3225e6038ce2acefaa654ca.jpg" alt="Картинка 1" class="news-image">
+            <p class="news-caption">Краткое описание картинки 1.</p>
+        </div>
+        <div class="news-footer">
+            <span class="likes">❤️ 123</span>
+        </div>
+    </div>
+    <div class="news-item">
+        <div class="news-header">
+            <span class="news-author">Автор </span>
+        </div>
+        <div class="news-content">
+            <img src="src/7a8ef4e7d70b995fb26eb990e00bbc3a.jpg" alt="Картинка 2" class="news-image">
+             <p class="news-caption">Описание картинки 2.</p>
+         </div>
+         <div class="news-footer">
+            <span class="likes">❤️ 234</span>
+        </div>
+    </div>
+
+     <div class="news-item">
+        <div class="news-header">
+            <span class="news-author">Автор</span>
+        </div>
+        <div class="news-content">
+            <img src="src/cbf28be06802d57792aa4bd29304478c.jpg" alt="Картинка 3" class="news-image">
+             <p class="news-caption">Описание картинки 3.</p>
+         </div>
+         <div class="news-footer">
+            <span class="likes">❤️ 345</span>
+        </div>
+    </div>
+</div>
+<div class="auth-container" id="authContainer">
+    <h2>Авторизация</h2>
+    <div class="input-group">
+        <label for="login">Логин:</label>
+        <input type="text" id="login" placeholder="Введите логин">
+    </div>
+    <div class="input-group">
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" placeholder="Введите пароль">
+    </div>
+    <button id="login-btn">Войти</button>
+    <div id="message" class="message"></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
