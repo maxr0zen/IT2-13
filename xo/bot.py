@@ -5,7 +5,7 @@ from aiogram.types import Message
 from aiogram import Router
 
 # Инициализация бота
-API_TOKEN = '5046443291:AAEWtv0Pylf4wqGFBVRXVNcjq5fyFuDhsL0'
+API_TOKEN = ''
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 router = Router()
