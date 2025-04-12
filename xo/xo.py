@@ -23,7 +23,7 @@ def win_check(game):
             print(f'Выйграл {game[i][0]}')
             return False
         if game[0][i] == game[1][i] == game[2][i] != '':
-            print(f'Выйграл {game[i][0]}')
+            print(f'Выйграл {game[0][i]}')
             return False
     if (game[0][0] == game[1][1] == game[2][2] != '') or \
         (game[0][2] == game[1][1] == game[2][0] != ''):
